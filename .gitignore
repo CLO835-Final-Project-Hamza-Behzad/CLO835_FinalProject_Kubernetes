@@ -13,7 +13,7 @@
 .terraformrc
 terraform.rc
 terraform-k8s/.terraform.lock.hcl
-
+mysql-db/secrets.yaml
 # Crash log files
 crash.log
 crash.*.log
