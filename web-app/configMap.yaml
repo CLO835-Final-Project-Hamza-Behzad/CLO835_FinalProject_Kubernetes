@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: final
+data:
+  DBPORT: "3306"
+  S3_BUCKET: br-hs-clo835-bucket
+  # BG: background.jpg
+  QOUTE: "Habits are the compound interest of self improvement."
+  QOUTEDBY: "Empowering the Cloud"
+  TITLE: "CloudMagicians"
+  BACKGROUND_IMAGE_NAME: "background2.jpg"

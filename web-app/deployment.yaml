@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application
+  namespace: final
+  labels:
+    app.kubernetes.io/app: employees
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/app: employees
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/app: employees
+    spec:
+      serviceAccountName: clo835
+      containers:
+      - name: application
+        image: 097656145156.dkr.ecr.us-east-1.amazonaws.com/clo835-app:latest
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: AWS_SECRET_ACCESS_KEY
+        - name: AWS_SESSION_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: AWS_SESSION_TOKEN
+        - name: DBUSER
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: DBUSER
+        - name: DBPWD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: DBPWD
+        - name: DBHOST
+          value: mysql-0.mysql-headless.final.svc.cluster.local
+        - name: DBPORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DBPORT
+        - name: S3_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: S3_BUCKET
+        - name: BACKGROUND_IMAGE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: BACKGROUND_IMAGE_NAME
+        - name: QOUTE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: QOUTE
+        - name: QOUTEDBY
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: QOUTEDBY
+        - name: TITLE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: TITLE
+        ports:
+        - containerPort: 81
+      imagePullSecrets:
+      - name: app-secrets
